@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Specialized Courses | Dr. Krishnan Chandrasekharan</title>
+    <meta name="description" content="Explore specialized leadership and capability-building courses designed by Dr. Krishnan Chandrasekharan.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+        :root {
+            --blue-900: #0a1628; --blue-800: #102040; --blue-700: #1a3560; --blue-600: #1e4080;
+            --blue-500: #1d4ed8; --blue-400: #3b82f6; --blue-300: #93c5fd; --blue-200: #bfdbfe;
+            --blue-100: #dbeafe; --blue-50:  #eff6ff;
+            --white:    #ffffff; --grey-50:  #f8fafc; --grey-100: #f1f5f9; --grey-200: #e2e8f0; --grey-500: #64748b; --grey-700: #334155;
+            --ink:      #0f172a;
+            --radius-md: 16px; --radius-lg: 24px; --radius-xl: 36px; --radius-full: 9999px;
+            --shadow-sm:  0 2px 12px rgba(15,23,42,0.08);
+            --shadow-md:  0 8px 32px rgba(15,23,42,0.10);
+            --shadow-lg:  0 20px 60px rgba(15,23,42,0.13);
+            --font-display: 'Playfair Display', serif; --font-body: 'Plus Jakarta Sans', sans-serif;
+            --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94); --tr: all 0.38s var(--ease);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background: var(--white); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+        .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px); }
+        .sec { padding: clamp(80px, 10vw, 136px) 0; }
+        .btn { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; text-decoration: none; border: none; border-radius: var(--radius-full); padding: 15px 32px; transition: var(--tr); cursor: pointer; }
+        .btn-blue { background: var(--blue-500); color: var(--white); box-shadow: 0 12px 40px rgba(29,78,216,0.22); }
+        .btn-blue:hover { background: var(--blue-700); transform: translateY(-2px); }
+
+        /* NAV PORT (Simplified) */
+        #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255,255,255,0.92); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(29,78,216,0.07); height: 72px; display: flex; align-items: center; }
+        .nb { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        .nbrand { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--blue-900); text-decoration: none; display: flex; align-items: center; gap: 12px; }
+        .nav-pic { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+
+        /* HERO */
+        .page-hero { margin-top: 72px; background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-800) 100%); padding: 100px 0; color: var(--white); text-align: center; }
+        .page-hero h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 18px; }
+
+        /* FILTERS */
+        .filter-bar { display: flex; gap: 12px; justify-content: center; margin-bottom: 48px; flex-wrap: wrap; }
+        .filter-btn { background: var(--grey-100); color: var(--grey-500); padding: 10px 24px; border-radius: var(--radius-full); border: none; cursor: pointer; font-weight: 600; font-size: 13px; transition: var(--tr); }
+        .filter-btn.act { background: var(--blue-500); color: var(--white); }
+
+        /* COURSE GRID */
+        .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        @media(max-width:1024px) { .course-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(max-width:640px) { .course-grid { grid-template-columns: 1fr; } }
+
+        .course-card { background: var(--white); border: 1px solid var(--grey-200); border-radius: var(--radius-lg); overflow: hidden; transition: var(--tr); display: flex; flex-direction: column; }
+        .course-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); }
+        .c-img { width: 100%; height: 200px; background: var(--blue-50); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .c-img i { font-size: 4rem; color: var(--blue-200); }
+        
+        .c-body { padding: 32px; flex-grow: 1; display: flex; flex-direction: column; }
+        .c-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--blue-500); letter-spacing: 0.1em; margin-bottom: 12px; }
+        .c-body h3 { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 14px; color: var(--ink); }
+        .c-body p { font-size: 14px; line-height: 1.62; color: var(--grey-500); margin-bottom: 24px; }
+        
+        .c-meta { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--grey-100); margin-top: auto; }
+        .c-dur { font-size: 12px; font-weight: 600; color: var(--grey-700); }
+        .c-price { font-size: 1.3rem; font-weight: 700; color: var(--blue-600); }
+
+        /* HAMBURGER & DRAWER */
+        .ham { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+        .ham span { display: block; width: 22px; height: 2px; background: var(--blue-800); border-radius: 2px; transition: var(--tr); }
+        .drw { display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 999; background: white; flex-direction: column; opacity: 0; transform: translateY(-10px); transition: var(--tr); pointer-events: none; box-shadow: var(--shadow-md); }
+        .drw.open { display: flex; opacity: 1; transform: translateY(0); pointer-events: all; }
+        .drw a { padding: 18px 24px; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--grey-100); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+        .drw a.act { color: var(--blue-500); }
+        @media(max-width:960px) { .ham { display: flex; } }
+
+        /* REVEAL */
+        .rev { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+        .rev.in { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<nav id="nav">
+    <div class="wrap nb">
+        <a href="../index.html" class="nbrand">
+            <img src="../images/profile1.jpeg" class="nav-pic" alt="Dr. Krishnan">
+            <span>Dr. Krishnan <em>Chandrasekharan</em></span>
+        </a>
+        <button class="ham" id="ham"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="drw" id="drw">
+    <a href="../index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="courses.html" class="act">Courses</a>
+    <a href="gallery.html">Visuals</a>
+    <a href="videos.html">Showreel</a>
+    <a href="blog.html">Blog</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="contact.html">Contact</a>
+</div>
+
+<header class="page-hero">
+    <div class="wrap">
+        <div class="rev" style="margin-bottom:24px;">
+            <a href="../index.html" style="color:var(--blue-300); text-decoration:none; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; display:inline-flex; align-items:center; gap:8px;">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+        <h1 class="rev">Specialized <em>Courses.</em></h1>
+        <p class="rev" style="opacity:0.7;">Elevate your leadership journey with outcome-driven learning programs.</p>
+    </div>
+</header>
+
+<section class="sec">
+    <div class="wrap">
+        <div class="filter-bar rev">
+            <button class="filter-btn act" data-cat="all">All Courses</button>
+            <button class="filter-btn" data-cat="leadership">Leadership</button>
+            <button class="filter-btn" data-cat="communication">Communication</button>
+            <button class="filter-btn" data-cat="mindset">Mindset</button>
+        </div>
+
+        <div class="course-grid" id="course-grid">
+            <!-- Dynamic Injection -->
+        </div>
+    </div>
+</section>
+
+<script>
+    const courses = [
+        { id: "c1", title: "Executive Leadership Mastery", category: "leadership", duration: "8 Weeks", price: "₹14,999", amount: 1499900, desc: "Transform from a manager to a visionary leader with advanced behavioral ownership frameworks.", icon: "fa-users-cog" },
+        { id: "c2", title: "Public Speaking for Strategists", category: "communication", duration: "4 Weeks", price: "₹8,499", amount: 849900, desc: "Command the room and deliver high-impact presentations that drive organizational change.", icon: "fa-microphone-alt" },
+        { id: "c3", title: "Emotional Intelligence Architect", category: "mindset", duration: "6 Weeks", price: "₹11,999", amount: 1199900, desc: "Master the psychology of leadership and build high-performance cultural systems.", icon: "fa-brain" },
+        { id: "c4", title: "Strategic Decision Making", category: "leadership", duration: "4 Weeks", price: "₹9,999", amount: 999900, desc: "Learn to navigate complex organizational dynamics with data-backed leadership diagnostics.", icon: "fa-chess" },
+        { id: "c5", title: "AI-Enabled Learning Design", category: "mindset", duration: "5 Weeks", price: "₹12,499", amount: 1249900, desc: "Leverage AI to create personalized development journeys in the corporate environment.", icon: "fa-robot" }
+    ];
+
+    function renderCourses(filter = "all") {
+        const grid = document.getElementById('course-grid');
+        grid.innerHTML = courses
+            .filter(c => filter === "all" || c.category === filter)
+            .map(c => `
+                <div class="course-card rev in" data-cat="${c.category}">
+                    <div class="c-img"><i class="fas ${c.icon}"></i></div>
+                    <div class="c-body">
+                        <span class="c-cat">${c.category}</span>
+                        <h3>${c.title}</h3>
+                        <p>${c.desc}</p>
+                        <button class="btn btn-blue" onclick="payNow('${c.id}')">Enroll Now <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="c-meta">
+                        <span class="c-dur"><i class="far fa-clock"></i> ${c.duration}</span>
+                        <span class="c-price">${c.price}</span>
+                    </div>
+                </div>
+            `).join('');
+    }
+
+    // Filter Logic
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('act'));
+            btn.classList.add('act');
+            renderCourses(btn.dataset.cat);
+        });
+    });
+
+    // Mobile Drawer
+    document.getElementById('ham').addEventListener('click', () => {
+        document.getElementById('drw').classList.toggle('open');
+    });
+
+    // RAZORPAY INTEGRATION
+    function payNow(courseId) {
+        console.log("Initiating payment for course:", courseId);
+        const course = courses.find(c => c.id === courseId);
+        if (!course) {
+            console.error("Course not found:", courseId);
+            return;
+        }
+
+        if (typeof Razorpay === 'undefined') {
+            alert("Razorpay SDK failed to load. Please check your internet connection.");
+            return;
+        }
+
+        const options = {
+            "key": "rzp_test_YOUR_ID", 
+            "amount": parseInt(course.amount),
+            "currency": "INR",
+            "name": "Dr. Krishnan Chandrasekharan",
+            "description": "Enrollment - " + course.title,
+            "image": "https://raw.githubusercontent.com/antigravity-ai/assets/main/drkc/profile1.jpeg",
+            "handler": function (response) {
+                alert("Payment Successful! Transaction ID: " + response.razorpay_payment_id);
+            },
+            "modal": {
+                "ondismiss": function() {
+                    console.log("Checkout form closed");
+                }
+            },
+            "prefill": {
+                "name": "",
+                "email": "",
+                "contact": ""
+            },
+            "theme": { "color": "#1d4ed8" }
+        };
+        const rzp = new Razorpay(options);
+        rzp.open();
+    }
+
+    renderCourses();
+
+    // Reveal Logic
+    const ro = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){e.target.classList.add('in');} }), {threshold:0.1});
+    document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+</script>
+</body>
+</html>
